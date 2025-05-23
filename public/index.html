@@ -1,0 +1,28 @@
+<!-- public/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div id="registrations"></div>
+    <script>
+        async function fetchRegistrations() {
+            const response = await fetch('http://localhost:5000/api/registrations');
+            const registrations = await response.json();
+
+            const container = document.getElementById('registrations');
+            registrations.forEach(reg => {
+                const div = document.createElement('div');
+                div.innerHTML = `<p>${reg.name} - ${reg.email} - Checked In: ${reg.checkedIn}</p>`;
+                container.appendChild(div);
+            });
+        }
+        fetchRegistrations();
+    </script>
+</body>
+</html>

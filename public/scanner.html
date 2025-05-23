@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+</head>
+<body>
+    <h1>Scan QR Code</h1>
+    <video id="preview"></video>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script>
+        const qrCodeScanner = new Html5QrcodeScanner(
+            "preview", { fps: 10, qrbox: 250 });
+
+        qrCodeScanner.render(async (decodedText) => {
+            const response = await fetch('http://localhost:5000/api/registrations/checkin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ qrCodeData: decodedText })
+            });
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>
